@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>El tiempo que nos queda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --crema:      #F5EFE0;
+            --crema-osc:  #EDE4CC;
+            --cafe:       #3B2A1A;
+            --cafe-med:   #6B4C2A;
+            --terracota:  #C4623A;
+            --musgo:      #5C6B3A;
+            --musgo-claro:#8A9E5A;
+            --arena:      #C8A97A;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Karla', sans-serif;
+            background: var(--crema);
+            color: var(--cafe);
+            min-height: 100vh;
+        }
+
+        /* ── PORTADA ─────────────────────────────── */
+        #portada {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--cafe);
+            color: var(--crema);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #portada::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Ccircle cx='40' cy='40' r='1' fill='%236B4C2A' fill-opacity='0.4'/%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.6;
+        }
+
+        #portada h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2.2rem, 7vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            position: relative;
+            max-width: 700px;
+        }
+
+        #portada h1 em {
+            color: var(--terracota);
+            font-style: italic;
+        }
+
+        #portada p.intro {
+            font-size: clamp(0.95rem, 2vw, 1.15rem);
+            font-weight: 300;
+            max-width: 480px;
+            line-height: 1.8;
+            margin-top: 1.5rem;
+            position: relative;
+            opacity: 0.85;
+        }
+
+        .btn-empezar {
+            margin-top: 3rem;
+            position: relative;
+            display: inline-block;
+            background: var(--terracota);
+            color: var(--crema);
+            font-family: 'Karla', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.9rem 2.5rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-empezar:hover { background: var(--cafe-med); }
+
+        /* ── FORMULARIO ──────────────────────────── */
+        #formulario {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5rem 2rem;
+            background: var(--crema);
+        }
+
+        .form-wrap {
+            width: min(100%, 560px);
+        }
+
+        .form-titulo {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            font-weight: 400;
+            font-style: italic;
+            color: var(--cafe-med);
+            margin-bottom: 3rem;
+            border-left: 3px solid var(--terracota);
+            padding-left: 1rem;
+            line-height: 1.4;
+        }
+
+        .campo {
+            margin-bottom: 2rem;
+        }
+
+        .campo label {
+            display: block;
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--musgo);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .campo input,
+        .campo select {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1.5px solid var(--arena);
+            padding: 0.6rem 0;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.3rem;
+            color: var(--cafe);
+            outline: none;
+            transition: border-color 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 0;
+        }
+
+        .campo select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B4C2A' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            padding-right: 2rem;
+        }
+
+        .campo input:focus,
+        .campo select:focus { border-color: var(--terracota); }
+
+        .separador {
+            height: 1px;
+            background: var(--crema-osc);
+            margin: 2.5rem 0;
+            position: relative;
+        }
+        .separador::after {
+            content: '◆';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--crema);
+            padding: 0 0.5rem;
+            color: var(--arena);
+            font-size: 0.7rem;
+        }
+
+        .subtitulo-seccion {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--cafe-med);
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .btn-calcular {
+            width: 100%;
+            margin-top: 1rem;
+            background: var(--musgo);
+            color: var(--crema);
+            font-family: 'Karla', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-calcular:hover { background: var(--cafe); }
+
+        /* ── RESULTADO ───────────────────────────── */
+        #resultado {
+            display: none;
+            background: var(--cafe);
+            color: var(--crema);
+            min-height: 100vh;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        #resultado.visible { display: block; }
+
+        .resultado-wrap { max-width: 620px; margin: 0 auto; }
+
+        .etiqueta-res {
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--arena);
+            margin-bottom: 0.75rem;
+        }
+
+        .nombre-querido {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            font-weight: 400;
+            font-style: italic;
+            color: var(--arena);
+            margin-bottom: 0.5rem;
+        }
+
+        .numero-grande {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(5rem, 20vw, 10rem);
+            font-weight: 700;
+            color: var(--terracota);
+            line-height: 1;
+            margin: 0.25rem 0;
+        }
+
+        .numero-label {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            font-weight: 400;
+            font-style: italic;
+            color: var(--crema);
+            opacity: 0.75;
+            margin-bottom: 3rem;
+        }
+
+        /* bloques estilo wait but why */
+        #bloques-wrap {
+            margin: 2rem auto;
+            max-width: 560px;
+            text-align: left;
+        }
+
+        #bloques-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--arena);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #bloques-svg {
+            width: 100%;
+            display: block;
+        }
+
+        .reflexion {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+            font-style: italic;
+            line-height: 1.9;
+            color: var(--crema);
+            opacity: 0.7;
+            margin: 3rem 0 1.5rem;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-continuar {
+            margin-top: 2.5rem;
+            display: inline-block;
+            background: transparent;
+            color: var(--crema);
+            font-family: 'Karla', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 0.8rem 2rem;
+            border: 1px solid var(--arena);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-continuar:hover { background: var(--arena); color: var(--cafe); }
+
+        /* ── CONTEXTO OCDE ───────────────────────── */
+        #contexto {
+            display: none;
+            background: var(--crema);
+            padding: 5rem 2rem;
+        }
+        #contexto.visible { display: block; }
+
+        .contexto-wrap { max-width: 620px; margin: 0 auto; }
+
+        .seccion-titulo {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            font-weight: 700;
+            color: var(--cafe);
+            margin-bottom: 0.5rem;
+        }
+
+        .seccion-sub {
+            font-size: 0.9rem;
+            color: var(--cafe-med);
+            font-weight: 300;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+        }
+
+        /* Gráfica de bloques de tiempo diario */
+        .tiempo-bloque-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--cafe-med);
+            margin-bottom: 0.4rem;
+        }
+
+        #svg-tiempo { width: 100%; display: block; margin-bottom: 2.5rem; }
+
+        .leyenda {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 2rem;
+            margin-bottom: 3rem;
+        }
+        .ley-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.82rem;
+            color: var(--cafe-med);
+        }
+        .ley-color {
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0;
+        }
+
+        /* donuts de distribución */
+        .donuts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .donut-item { text-align: center; }
+
+        .donut-titulo {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--musgo);
+            margin-bottom: 0.75rem;
+        }
+
+        .donut-valor {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--cafe);
+            margin-top: 0.4rem;
+        }
+
+        .donut-unidad {
+            font-size: 0.78rem;
+            color: var(--cafe-med);
+            font-weight: 300;
+        }
+
+        /* frase final */
+        .frase-final {
+            border-top: 1px solid var(--crema-osc);
+            border-bottom: 1px solid var(--crema-osc);
+            padding: 2.5rem 0;
+            margin: 2rem 0;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            font-style: italic;
+            color: var(--cafe-med);
+            line-height: 1.8;
+        }
+
+        .frase-final strong { color: var(--terracota); font-style: normal; }
+
+        .fuentes {
+            font-size: 0.72rem;
+            color: var(--arena);
+            line-height: 1.7;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--crema-osc);
+        }
+
+        .btn-reiniciar {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto 0;
+            background: transparent;
+            color: var(--cafe-med);
+            font-family: 'Karla', sans-serif;
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 0.7rem 1.5rem;
+            border: 1px solid var(--arena);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-reiniciar:hover { background: var(--cafe); color: var(--crema); }
+
+        /* sin datos OCDE */
+        .sin-ocde {
+            background: var(--crema-osc);
+            padding: 1.5rem;
+            font-size: 0.88rem;
+            color: var(--cafe-med);
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     PORTADA
+════════════════════════════════════════════ -->
+<section id="portada">
+    <h1>¿Cuántas veces más<br>verás a las personas<br>que <em>más amas</em>?</h1>
+    <p class="intro">
+        Pensamos que tenemos todo el tiempo del mundo. Esta visualización, construida desde datos reales, te mostrará cuántos encuentros te quedan.
+    </p>
+    <a href="#formulario" class="btn-empezar">Comenzar</a>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FORMULARIO
+════════════════════════════════════════════ -->
+<section id="formulario">
+    <div class="form-wrap">
+        <p class="form-titulo">Cuéntame sobre ti<br>y sobre alguien importante.</p>
+
+        <!-- TU INFO -->
+        <div class="campo">
+            <label>Tu edad</label>
+            <input type="number" id="tu-edad" min="1" max="100" placeholder="ej. 25" />
+        </div>
+        <div class="campo">
+            <label>Tu país</label>
+            <select id="tu-pais">
+                <option value="">— Selecciona —</option>
+            </select>
+        </div>
+
+        <div class="separador"></div>
+        <p class="subtitulo-seccion">¿Y a quién quieres ver más?</p>
+
+        <!-- QUERIDO -->
+        <div class="campo">
+            <label>¿Quién es esta persona?</label>
+            <select id="tipo-querido">
+                <option value="">— Selecciona —</option>
+                <option value="madre">Mi madre</option>
+                <option value="padre">Mi padre</option>
+                <option value="abuela / abuelo">Mi abuela/o</option>
+                <option value="Tía/ Tío">Mi tío/a</option>
+                <option value="pareja">Mi pareja</option>
+            </select>
+        </div>
+        <div class="campo">
+            <label>Su edad</label>
+            <input type="number" id="edad-querido" min="1" max="120" placeholder="ej. 55" />
+        </div>
+        <div class="campo">
+            <label>Su país (si es distinto al tuyo)</label>
+            <select id="pais-querido">
+                <option value="">— Mismo país que yo —</option>
+            </select>
+        </div>
+        <div class="campo">
+            <label>¿Con qué frecuencia se ven actualmente?</label>
+            <select id="frecuencia">
+                <option value="">— Selecciona —</option>
+                <option value="365">A diario</option>
+                <option value="52">Una vez a la semana</option>
+                <option value="24">Dos veces al mes</option>
+                <option value="12">Una vez al mes</option>
+                <option value="4">Cada tres meses</option>
+                <option value="2">Dos veces al año</option>
+                <option value="1">Una vez al año</option>
+            </select>
+        </div>
+
+        <div id="error-msg" style="color:var(--terracota);font-size:0.85rem;margin-bottom:1rem;display:none;">
+            Por favor completa todos los campos antes de continuar.
+        </div>
+
+        <button class="btn-calcular" onclick="calcular()">Ver cuánto tiempo nos queda</button>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     RESULTADO — EL NÚMERO
+════════════════════════════════════════════ -->
+<section id="resultado">
+    <div class="resultado-wrap">
+        <p class="etiqueta-res">Encuentros estimados que te quedan con</p>
+        <p class="nombre-querido" id="res-nombre">—</p>
+        <div class="numero-grande" id="res-numero">—</div>
+        <div class="numero-label" id="res-label">veces más</div>
+
+        <!-- bloques wait-but-why -->
+        <div id="bloques-wrap">
+            <div id="bloques-label">
+                <span id="label-pasados"></span>
+                <span id="label-quedan"></span>
+            </div>
+            <svg id="bloques-svg" viewBox="0 0 560 120" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+
+        <p class="reflexion" id="res-reflexion">—</p>
+
+        <a href="#contexto" class="btn-continuar" onclick="mostrarContexto()">Ver el contexto completo ↓</a>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CONTEXTO OCDE
+════════════════════════════════════════════ -->
+<section id="contexto">
+    <div class="contexto-wrap">
+        <h2 class="seccion-titulo">Cómo usamos el tiempo</h2>
+        <p class="seccion-sub" id="ctx-sub">—</p>
+
+        <div id="bloque-ocde">
+            <!-- se llena con JS -->
+        </div>
+
+        <div class="frase-final" id="frase-final">—</div>
+
+        <div class="fuentes">
+            Fuentes de datos: <strong>OCDE Time Use Database</strong> (minutos/día por actividad, promedio poblacional) · <strong>Banco Mundial</strong> SP.DYN.LE00.IN (esperanza de vida al nacer, 2022). Los encuentros se calculan como: (esperanza de vida del ser querido − edad actual) × frecuencia anual de encuentros. Es una estimación basada en promedios estadísticos — la vida real es siempre más rica e impredecible que cualquier número.
+        </div>
+
+        <button class="btn-reiniciar" onclick="reiniciar()">← Volver a empezar</button>
+    </div>
+</section>
+
+<script>
+// ── DATOS ────────────────────────────────────────────────────────────────
+const DATOS = {
+  "Australia":     { le: 83.2, paid: 238, unpaid: 243, personal: 657, leisure: 281 },
+  "Austria":       { le: 81.3, paid: 266, unpaid: 188, personal: 668, leisure: 307 },
+  "Bélgica":       { le: 81.7, paid: 236, unpaid: 192, personal: 664, leisure: 339 },
+  "Canadá":        { le: 81.1, paid: 337, unpaid: 205, personal: 656, leisure: 211 },
+  "Dinamarca":     { le: 81.3, paid: 225, unpaid: 217, personal: 659, leisure: 329 },
+  "Estonia":       { le: 77.8, paid: 293, unpaid: 174, personal: 654, leisure: 301 },
+  "Finlandia":     { le: 81.2, paid: 240, unpaid: 186, personal: 645, leisure: 330 },
+  "Francia":       { le: 82.1, paid: 204, unpaid: 181, personal: 752, leisure: 294 },
+  "Alemania":      { le: 80.6, paid: 244, unpaid: 192, personal: 658, leisure: 341 },
+  "Grecia":        { le: 80.8, paid: 230, unpaid: 184, personal: 685, leisure: 335 },
+  "Hungría":       { le: 75.9, paid: 238, unpaid: 229, personal: 683, leisure: 281 },
+  "Irlanda":       { le: 82.5, paid: 268, unpaid: 210, personal: 609, leisure: 312 },
+  "Italia":        { le: 82.7, paid: 177, unpaid: 219, personal: 708, leisure: 323 },
+  "Japón":         { le: 84.0, paid: 368, unpaid: 125, personal: 640, leisure: 269 },
+  "Corea del Sur": { le: 82.7, paid: 344, unpaid: 132, personal: 678, leisure: 258 },
+  "Letonia":       { le: 74.3, paid: 330, unpaid: 196, personal: 641, leisure: 269 },
+  "Lituania":      { le: 75.6, paid: 315, unpaid: 224, personal: 646, leisure: 247 },
+  "Luxemburgo":    { le: 82.9, paid: 285, unpaid: 179, personal: 686, leisure: 276 },
+  "México":        { le: 74.0, paid: 349, unpaid: 256, personal: 606, leisure: 203 },
+  "Países Bajos":  { le: 81.6, paid: 243, unpaid: 186, personal: 682, leisure: 315 },
+  "Nueva Zelanda": { le: 82.2, paid: 270, unpaid: 204, personal: 648, leisure: 301 },
+  "Noruega":       { le: 82.5, paid: 275, unpaid: 186, personal: 613, leisure: 354 },
+  "Polonia":       { le: 77.2, paid: 214, unpaid: 248, personal: 682, leisure: 261 },
+  "Portugal":      { le: 81.6, paid: 295, unpaid: 223, personal: 676, leisure: 241 },
+  "Eslovenia":     { le: 81.3, paid: 265, unpaid: 231, personal: 628, leisure: 311 },
+  "España":        { le: 83.1, paid: 202, unpaid: 217, personal: 692, leisure: 316 },
+  "Suecia":        { le: 83.1, paid: 293, unpaid: 196, personal: 622, leisure: 321 },
+  "Turquía":       { le: 77.6, paid: 246, unpaid: 186, personal: 682, leisure: 286 },
+  "Reino Unido":   { le: 81.0, paid: 262, unpaid: 195, personal: 645, leisure: 306 },
+  "Estados Unidos":{ le: 77.4, paid: 278, unpaid: 197, personal: 664, leisure: 280 },
+  "Bulgaria":      { le: 74.2, paid: 282, unpaid: 189, personal: 723, leisure: 241 },
+  "China":         { le: 78.2, paid: 340, unpaid: 164, personal: 694, leisure: 228 },
+  "Croacia":       { le: 77.6, paid: 321, unpaid: 203, personal: 655, leisure: 251 },
+  "India":         { le: 71.7, paid: 295, unpaid: 191, personal: 687, leisure: 254 },
+  "Sudáfrica":     { le: 65.5, paid: 241, unpaid: 182, personal: 695, leisure: 306 },
+  "Chile":         { le: 79.2, paid: null, unpaid: null, personal: null, leisure: null },
+  "Argentina":     { le: 75.8, paid: null, unpaid: null, personal: null, leisure: null },
+  "Brasil":        { le: 74.9, paid: null, unpaid: null, personal: null, leisure: null },
+  "Colombia":      { le: 76.5, paid: null, unpaid: null, personal: null, leisure: null },
+  "Perú":          { le: 76.8, paid: null, unpaid: null, personal: null, leisure: null }
+};
+
+const PAISES = Object.keys(DATOS).sort();
+
+// ── POBLAR SELECTS ───────────────────────────────────────────────────────
+function poblarSelects() {
+    var selects = [document.getElementById("tu-pais"), document.getElementById("pais-querido")];
+    selects.forEach(function(sel) {
+        PAISES.forEach(function(p) {
+            var op = document.createElement("option");
+            op.value = p;
+            op.textContent = p;
+            sel.appendChild(op);
+        });
+    });
+}
+poblarSelects();
+
+// ── CALCULAR ─────────────────────────────────────────────────────────────
+var estado = {};
+
+function calcular() {
+    var tuEdad      = parseInt(document.getElementById("tu-edad").value);
+    var tuPais      = document.getElementById("tu-pais").value;
+    var tipoQuerido = document.getElementById("tipo-querido").value;
+    var edadQuerido = parseInt(document.getElementById("edad-querido").value);
+    var paisQuerido = document.getElementById("pais-querido").value || tuPais;
+    var frecuencia  = parseInt(document.getElementById("frecuencia").value);
+
+    var errorMsg = document.getElementById("error-msg");
+
+    if (!tuEdad || !tuPais || !tipoQuerido || !edadQuerido || !frecuencia) {
+        errorMsg.style.display = "block";
+        return;
+    }
+    errorMsg.style.display = "none";
+
+    var datosPais = DATOS[paisQuerido] || DATOS[tuPais];
+    var le = datosPais.le || 80;
+
+    // años que le quedan al ser querido según esperanza de vida de su país
+    var aniosRestantes = Math.max(0, le - edadQuerido);
+
+    // encuentros totales restantes
+    var encuentros = Math.round(aniosRestantes * frecuencia);
+
+    // encuentros ya vividos (desde su nacimiento hasta ahora con esa frecuencia)
+    var aniosPasados = edadQuerido;
+    var encuentrosPasados = Math.round(aniosPasados * frecuencia);
+
+    estado = {
+        tuEdad, tuPais, tipoQuerido, edadQuerido, paisQuerido,
+        frecuencia, le, aniosRestantes, encuentros, encuentrosPasados,
+        datosMiPais: DATOS[tuPais]
+    };
+
+    mostrarResultado();
+}
+
+// ── MOSTRAR RESULTADO ────────────────────────────────────────────────────
+function mostrarResultado() {
+    var s = estado;
+
+    document.getElementById("res-nombre").textContent = "tu " + s.tipoQuerido;
+    document.getElementById("res-numero").textContent = s.encuentros.toLocaleString("es-CL");
+    document.getElementById("res-label").textContent  = s.encuentros === 1 ? "vez más" : "veces más";
+
+    // reflexion
+    var frec_txt = "";
+    if      (s.frecuencia >= 365) frec_txt = "todos los días";
+    else if (s.frecuencia >= 52)  frec_txt = "cada semana";
+    else if (s.frecuencia >= 24)  frec_txt = "dos veces al mes";
+    else if (s.frecuencia >= 12)  frec_txt = "cada mes";
+    else if (s.frecuencia >= 4)   frec_txt = "cada tres meses";
+    else if (s.frecuencia >= 2)   frec_txt = "dos veces al año";
+    else                           frec_txt = "una vez al año";
+
+    document.getElementById("res-reflexion").textContent =
+        "Si siguen viéndose " + frec_txt + " como hasta ahora, " +
+        "y tu " + s.tipoQuerido + " vive hasta los " + Math.round(s.le) + " años " +
+        "— el promedio en " + s.paisQuerido + " — " +
+        "les quedan aproximadamente " + s.encuentros.toLocaleString("es-CL") + " encuentros. " +
+        "Cada uno cuenta.";
+
+    // Bloques SVG
+    dibujarBloques(s.encuentros, s.encuentrosPasados);
+
+    document.getElementById("resultado").classList.add("visible");
+    document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
+}
+
+// ── BLOQUES SVG ──────────────────────────────────────────────────────────
+function dibujarBloques(quedan, pasados) {
+    var svg = document.getElementById("bloques-svg");
+    svg.innerHTML = "";
+
+    var total = quedan + pasados;
+    // max 500 bloques para que no se sature visualmente
+    var escala = total > 500 ? total / 500 : 1;
+    var totalMostrar = Math.min(total, 500);
+    var quedanMostrar = Math.min(quedan, Math.round(quedan / escala));
+    var pasadosMostrar = totalMostrar - quedanMostrar;
+
+    var cols = 50;
+    var size = 8;
+    var gap  = 2;
+    var x = 0, y = 0;
+    var count = 0;
+
+    for (var i = 0; i < totalMostrar; i++) {
+        var esPasado = i < pasadosMostrar;
+        var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rect.setAttribute("x", x * (size + gap));
+        rect.setAttribute("y", y * (size + gap));
+        rect.setAttribute("width", size);
+        rect.setAttribute("height", size);
+        rect.setAttribute("fill", esPasado ? "#6B4C2A" : "#C4623A");
+        rect.setAttribute("opacity", esPasado ? "0.3" : "1");
+        svg.appendChild(rect);
+
+        x++;
+        if (x >= cols) { x = 0; y++; }
+        count++;
+    }
+
+    var alturaTotal = (y + 1) * (size + gap);
+    svg.setAttribute("viewBox", "0 0 " + (cols * (size + gap)) + " " + alturaTotal);
+
+    document.getElementById("label-pasados").textContent =
+        "■ " + pasados.toLocaleString("es-CL") + " encuentros ya vividos";
+    document.getElementById("label-quedan").textContent =
+        quedan.toLocaleString("es-CL") + " por venir ■";
+}
+
+// ── MOSTRAR CONTEXTO OCDE ────────────────────────────────────────────────
+function mostrarContexto() {
+    var s = estado;
+    var d = s.datosMiPais;
+
+    document.getElementById("ctx-sub").textContent =
+        "En " + s.tuPais + ", una persona promedio distribuye su día así. " +
+        "¿Dónde caben las personas que amas?";
+
+    var bloque = document.getElementById("bloque-ocde");
+
+    if (!d || d.paid === null) {
+        bloque.innerHTML =
+            '<div class="sin-ocde">No hay datos de uso del tiempo para ' + s.tuPais +
+            ' en la base de datos OCDE. Los datos disponibles corresponden a países miembros y algunos socios.</div>';
+        generarFraseFinal(s, null);
+    } else {
+        var total = d.paid + d.unpaid + d.personal + d.leisure;
+
+        // Gráfica de barras apiladas: 1440 min/día
+        bloque.innerHTML = crearGraficaTiempo(d, s.tuPais);
+        generarFraseFinal(s, d);
+    }
+
+    document.getElementById("contexto").classList.add("visible");
+    setTimeout(function() {
+        document.getElementById("contexto").scrollIntoView({ behavior: "smooth" });
+    }, 100);
+}
+
+function crearGraficaTiempo(d, pais) {
+    var total = 1440; // minutos en un día
+    // proporción de cada categoría respecto al día
+    var cats = [
+        { nombre: "Trabajo remunerado", min: d.paid,     color: "#3B2A1A" },
+        { nombre: "Trabajo no remunerado", min: d.unpaid, color: "#6B4C2A" },
+        { nombre: "Cuidado personal",   min: d.personal, color: "#C8A97A" },
+        { nombre: "Ocio y tiempo libre",min: d.leisure,  color: "#5C6B3A" },
+        { nombre: "Otro",               min: Math.max(0, total - d.paid - d.unpaid - d.personal - d.leisure), color: "#CCCCCC" }
+    ];
+
+    var ancho = 560;
+    var alto  = 54;
+    var x = 0;
+    var barras = "";
+    var leyenda = "";
+
+    cats.forEach(function(c) {
+        var w = Math.round((c.min / total) * ancho);
+        if (w <= 0) return;
+        barras += '<rect x="' + x + '" y="0" width="' + w + '" height="' + alto + '" fill="' + c.color + '" />';
+        // etiqueta si hay espacio
+        if (w > 50) {
+            var horas = (c.min / 60).toFixed(1) + "h";
+            barras += '<text x="' + (x + w/2) + '" y="' + (alto/2 - 4) + '" text-anchor="middle" font-size="7" fill="#F5EFE0" font-family="Karla,sans-serif" opacity="0.9">' + horas + '</text>';
+            barras += '<text x="' + (x + w/2) + '" y="' + (alto/2 + 8) + '" text-anchor="middle" font-size="5.5" fill="#F5EFE0" font-family="Karla,sans-serif" opacity="0.7">' + Math.round(c.min/1440*100) + '%</text>';
+        }
+        leyenda += '<div class="ley-item"><div class="ley-color" style="background:' + c.color + '"></div>' + c.nombre + ' <strong style="margin-left:4px;color:var(--cafe)">(' + c.min + ' min)</strong></div>';
+        x += w;
+    });
+
+    // donuts individuales
+    var donutsSVG = cats.slice(0, 4).map(function(c) {
+        var pct = Math.round(c.min / total * 100);
+        var dashArr = pct + " " + (100 - pct);
+        return '<div class="donut-item">' +
+            '<div class="donut-titulo">' + c.nombre + '</div>' +
+            '<svg viewBox="0 0 42 42" width="90" height="90" style="transform:rotate(-90deg)">' +
+            '<circle cx="21" cy="21" r="15.9" fill="transparent" stroke="#EDE4CC" stroke-width="3" />' +
+            '<circle cx="21" cy="21" r="15.9" fill="transparent" stroke="' + c.color + '" stroke-width="3" stroke-dasharray="' + dashArr + '" stroke-dashoffset="0" />' +
+            '</svg>' +
+            '<div class="donut-valor">' + (c.min/60).toFixed(1) + '</div>' +
+            '<div class="donut-unidad">horas / día</div>' +
+            '</div>';
+    }).join("");
+
+    return '<div class="tiempo-bloque-label">Distribución del día en ' + pais + ' · 1.440 minutos</div>' +
+        '<svg id="svg-tiempo" viewBox="0 0 ' + ancho + ' ' + alto + '" xmlns="http://www.w3.org/2000/svg">' + barras + '</svg>' +
+        '<div class="leyenda">' + leyenda + '</div>' +
+        '<div class="donuts-grid">' + donutsSVG + '</div>';
+}
+
+function generarFraseFinal(s, d) {
+    var txt;
+    if (d && d.leisure) {
+        var horasOcio = (d.leisure / 60).toFixed(1);
+        txt = 'En ' + s.tuPais + ', el tiempo libre diario promedia <strong>' + horasOcio + ' horas</strong>. ' +
+              'De esas horas, ¿cuántas van para las personas que más amas? ' +
+              'Te quedan <strong>' + s.encuentros.toLocaleString("es-CL") + ' encuentros</strong> con tu ' + s.tipoQuerido + '. ' +
+              'El tiempo no espera — pero tú puedes decidir cómo usarlo.';
+    } else {
+        txt = 'Te quedan <strong>' + s.encuentros.toLocaleString("es-CL") + ' encuentros</strong> con tu ' + s.tipoQuerido + '. ' +
+              'Cada visita, cada llamada, cada momento compartido es uno de ellos. ' +
+              'El tiempo no espera — pero tú puedes decidir cómo usarlo.';
+    }
+    document.getElementById("frase-final").innerHTML = txt;
+}
+
+// ── REINICIAR ────────────────────────────────────────────────────────────
+function reiniciar() {
+    document.getElementById("resultado").classList.remove("visible");
+    document.getElementById("contexto").classList.remove("visible");
+    document.getElementById("tu-edad").value   = "";
+    document.getElementById("tu-pais").value   = "";
+    document.getElementById("tipo-querido").value  = "";
+    document.getElementById("edad-querido").value  = "";
+    document.getElementById("pais-querido").value  = "";
+    document.getElementById("frecuencia").value    = "";
+    document.getElementById("formulario").scrollIntoView({ behavior: "smooth" });
+}
+</script>
+</body>
+</html>
